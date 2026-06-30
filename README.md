@@ -1,1 +1,1 @@
-Technology, Information & Media company building products that inform, empower, and create opportunities in the global digital economy.
+Yong Social is a technology, information, and media company founded with a clear purpose: to build digital products and platforms that give people real access to financial knowledge, market insight, and economic opportunity.
