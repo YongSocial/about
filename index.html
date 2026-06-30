@@ -228,6 +228,21 @@ section{padding:100px 24px}
 .about-card h4{font-family:var(--ff-display);font-size:16px;font-weight:700;color:var(--light);margin-bottom:6px}
 .about-card p{font-size:14px;color:var(--muted);line-height:1.55}
 
+/* EXECUTIVES */
+#executives{background:var(--bg)}
+.exec-inner{max-width:760px;margin:0 auto;text-align:center}
+.exec-inner .section-label{display:block;text-align:center;margin-bottom:20px}
+.exec-inner .section-title{margin-bottom:24px}
+.exec-body{font-size:16px;font-weight:300;color:var(--muted);line-height:1.75;max-width:660px;margin:0 auto}
+.exec-body p+p{margin-top:14px}
+.exec-avatars{display:flex;justify-content:center;margin:40px 0}
+.exec-avatar-stack{display:flex}
+.exec-avatar-stack span{width:52px;height:52px;border-radius:50%;background:var(--bg3);border:2px solid var(--bg);margin-left:-14px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.exec-avatar-stack span:first-child{margin-left:0}
+.exec-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:10px;background:var(--amber);color:#0a0c11;font-weight:700;font-size:15px;transition:background .2s,transform .15s;box-shadow:0 8px 32px -10px rgba(245,166,35,.5)}
+.exec-cta:hover{background:#ffb63d;transform:translateY(-2px)}
+.exec-cta svg{width:14px;height:14px}
+
 /* PRODUCTS */
 #products{background:var(--bg)}
 .products-header{margin-bottom:64px}
@@ -372,6 +387,7 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
   </a>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
+    <a href="#executives">Executives</a>
     <a href="#products">Products</a>
     <a href="#brand">Brand</a>
     <a href="#mission">Mission</a>
@@ -447,6 +463,34 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
           <h4>Economic Access</h4>
           <p>Helping people participate in the digital economy — from first steps in financial literacy to active market participation.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXECUTIVES -->
+<section id="executives">
+  <div class="container">
+    <div class="exec-inner">
+      <span class="section-label reveal">Leadership</span>
+      <h2 class="section-title reveal reveal-delay-1">Meet the executives</h2>
+      <div class="exec-avatars reveal reveal-delay-2">
+        <div class="exec-avatar-stack">
+          <span>👤</span><span>👤</span><span>👤</span><span>👤</span>
+        </div>
+      </div>
+      <div class="exec-body reveal reveal-delay-2">
+        <p>The people leading Yong Social's mission to inform, empower, and create opportunities in the global digital economy.</p>
+        <p>Our executives bring together expertise across technology, media, finance, product development, marketing, and operations, working to build products and experiences that make information, finance, and opportunity simple, honest, and accessible.</p>
+        <p>Together, they guide the vision, strategy, and growth of the Yong Social ecosystem.</p>
+      </div>
+      <div style="margin-top:36px" class="reveal reveal-delay-3">
+        <a class="exec-cta" href="https://executives.yongsocial.com" target="_blank" rel="noopener">
+          Meet the team
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
   </div>
