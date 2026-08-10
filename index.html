@@ -228,21 +228,6 @@ section{padding:100px 24px}
 .about-card h4{font-family:var(--ff-display);font-size:16px;font-weight:700;color:var(--light);margin-bottom:6px}
 .about-card p{font-size:14px;color:var(--muted);line-height:1.55}
 
-/* EXECUTIVES */
-#executives{background:var(--bg)}
-.exec-inner{max-width:760px;margin:0 auto;text-align:center}
-.exec-inner .section-label{display:block;text-align:center;margin-bottom:20px}
-.exec-inner .section-title{margin-bottom:24px}
-.exec-body{font-size:16px;font-weight:300;color:var(--muted);line-height:1.75;max-width:660px;margin:0 auto}
-.exec-body p+p{margin-top:14px}
-.exec-avatars{display:flex;justify-content:center;margin:40px 0}
-.exec-avatar-stack{display:flex}
-.exec-avatar-stack span{width:52px;height:52px;border-radius:50%;background:var(--bg3);border:2px solid var(--bg);margin-left:-14px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(0,0,0,.3)}
-.exec-avatar-stack span:first-child{margin-left:0}
-.exec-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:10px;background:var(--amber);color:#0a0c11;font-weight:700;font-size:15px;transition:background .2s,transform .15s;box-shadow:0 8px 32px -10px rgba(245,166,35,.5)}
-.exec-cta:hover{background:#ffb63d;transform:translateY(-2px)}
-.exec-cta svg{width:14px;height:14px}
-
 /* PRODUCTS */
 #products{background:var(--bg)}
 .products-header{margin-bottom:64px}
@@ -262,35 +247,6 @@ section{padding:100px 24px}
 .product-preview{margin-top:28px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
 .product-preview-bar{height:32px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;padding:0 12px}
 .product-preview-bar span{width:9px;height:9px;border-radius:50%}
-
-/* BRAND ASSETS */
-#brand{background:var(--bg2)}
-.brand-intro{max-width:600px;margin-bottom:56px}
-.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
-.brand-asset-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s}
-.brand-asset-card:hover{border-color:rgba(245,166,35,.3);transform:translateY(-3px)}
-.brand-asset-preview{height:160px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);padding:24px}
-.brand-asset-preview img{max-width:100%;max-height:100%;object-fit:contain}
-.brand-asset-preview.dark-bg{background:var(--bg)}
-.brand-asset-preview.light-bg{background:#f5f5f5}
-.brand-asset-preview.amber-bg{background:var(--amber)}
-.brand-asset-body{padding:16px 18px}
-.brand-asset-body h5{font-family:var(--ff-display);font-size:14px;font-weight:700;color:var(--light);margin-bottom:4px}
-.brand-asset-body p{font-size:12px;color:var(--muted)}
-.brand-download-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
-.brand-dl-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:color .2s,border-color .2s}
-.brand-dl-btn:hover{color:var(--amber);border-color:rgba(245,166,35,.4)}
-.brand-pack-box{margin-top:0;padding:32px;border-radius:14px;background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(13,148,136,.06));border:1px solid rgba(245,166,35,.2);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.brand-pack-text h4{font-family:var(--ff-display);font-size:20px;font-weight:800;color:var(--light);margin-bottom:6px}
-.brand-pack-text p{font-size:14px;color:var(--muted);line-height:1.55;max-width:480px}
-.brand-pack-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:10px;background:var(--amber);color:#0a0c11;font-weight:700;font-size:14px;white-space:nowrap;cursor:pointer;border:none;transition:background .2s,transform .15s;box-shadow:0 6px 24px -8px rgba(245,166,35,.5)}
-.brand-pack-btn:hover{background:#ffb63d;transform:translateY(-1px)}
-.brand-guidelines{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.guideline-item{padding:20px;border-radius:12px;background:var(--bg3);border:1px solid var(--border)}
-.guideline-item h6{font-family:var(--ff-display);font-size:14px;font-weight:700;color:var(--light);margin-bottom:6px}
-.guideline-item p{font-size:13px;color:var(--muted);line-height:1.5}
-.color-swatches{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.swatch{width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.1)}
 
 /* MISSION */
 #mission{background:var(--bg)}
@@ -357,8 +313,6 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
   .mission-pillars{grid-template-columns:1fr;gap:0}
   .pillar{border-bottom:1px solid var(--border)}
   .pillar:last-child{border-bottom:none}
-  .brand-grid{grid-template-columns:1fr 1fr}
-  .brand-guidelines{grid-template-columns:1fr}
   .nav-links{display:none}
   .nav-mobile-btn{display:flex}
   .footer-top{flex-direction:column}
@@ -369,7 +323,6 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
   section{padding:72px 20px}
   .hero{padding:100px 20px 72px}
   .hero-stats{gap:32px}
-  .brand-grid{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none}
@@ -387,9 +340,7 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
   </a>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
-    <a href="#executives">Executives</a>
     <a href="#products">Products</a>
-    <a href="#brand">Brand</a>
     <a href="#mission">Mission</a>
     <a href="#contact">Contact</a>
     <a class="nav-cta" href="https://www.yongsocial.com/" target="_blank" rel="noopener">Visit Platform →</a>
@@ -468,35 +419,6 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- EXECUTIVES -->
-<section id="executives">
-  <div class="container">
-    <div class="exec-inner">
-      <span class="section-label reveal">Leadership</span>
-      <h2 class="section-title reveal reveal-delay-1">Meet the executives</h2>
-      <div class="exec-avatars reveal reveal-delay-2">
-        <div class="exec-avatar-stack">
-          <span>👤</span><span>👤</span><span>👤</span><span>👤</span>
-        </div>
-      </div>
-      <div class="exec-body reveal reveal-delay-2">
-        <p>The people leading Yong Social's mission to inform, empower, and create opportunities in the global digital economy.</p>
-        <p>Our executives bring together expertise across technology, media, finance, product development, marketing, and operations, working to build products and experiences that make information, finance, and opportunity simple, honest, and accessible.</p>
-        <p>Together, they guide the vision, strategy, and growth of the Yong Social ecosystem.</p>
-      </div>
-      <div style="margin-top:36px" class="reveal reveal-delay-3">
-        <a class="exec-cta" href="https://executives.yongsocial.com" target="_blank" rel="noopener">
-          Meet the team
-          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
 
 <!-- PRODUCTS -->
 <section id="products">
@@ -560,101 +482,6 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- BRAND ASSETS -->
-<section id="brand">
-  <div class="container">
-    <div class="brand-intro reveal">
-      <span class="section-label">Press &amp; Media</span>
-      <h2 class="section-title">Brand assets</h2>
-      <p class="section-sub">Download the official Yong Social logos, brand guidelines, company information, and media resources for editorial, partnership, and promotional use.</p>
-    </div>
-
-    <!-- Logo variants -->
-    <div class="brand-grid reveal reveal-delay-1">
-      <div class="brand-asset-card">
-        <div class="brand-asset-preview dark-bg">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQEkm4yAWBBmMpwbpviOjvLebf_oKaaNTYNEVa04rftZHFd3_kHfX9rzZloXod_cxUHMKufKYNcZc-8IvxmryarA_WrDps7JWNK-Vp0lA5ejDOMjrH0JO_K6l1Ouhdi71jN5UvJwZVNXgwtOGaD95iwG3IZpQQgsLMj5ehA1tv30lDPecqUaOSYNWADwG4/s1254/ChatGPT%20Image%20Jun%2028,%202026,%2009_34_54%20PM_093530.jpg" alt="Yong Social Logo — Dark background"/>
-        </div>
-        <div class="brand-asset-body">
-          <h5>Logo — Dark background</h5>
-          <p>Primary usage on dark surfaces</p>
-          <div class="brand-download-row">
-            <button class="brand-dl-btn" onclick="showComingSoon(this)">↓ PNG</button>
-            <button class="brand-dl-btn" onclick="showComingSoon(this)">↓ SVG</button>
-          </div>
-        </div>
-      </div>
-      <div class="brand-asset-card">
-        <div class="brand-asset-preview light-bg">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQEkm4yAWBBmMpwbpviOjvLebf_oKaaNTYNEVa04rftZHFd3_kHfX9rzZloXod_cxUHMKufKYNcZc-8IvxmryarA_WrDps7JWNK-Vp0lA5ejDOMjrH0JO_K6l1Ouhdi71jN5UvJwZVNXgwtOGaD95iwG3IZpQQgsLMj5ehA1tv30lDPecqUaOSYNWADwG4/s1254/ChatGPT%20Image%20Jun%2028,%202026,%2009_34_54%20PM_093530.jpg" alt="Yong Social Logo — Light background"/>
-        </div>
-        <div class="brand-asset-body">
-          <h5>Logo — Light background</h5>
-          <p>For use on white or light surfaces</p>
-          <div class="brand-download-row">
-            <button class="brand-dl-btn" onclick="showComingSoon(this)">↓ PNG</button>
-            <button class="brand-dl-btn" onclick="showComingSoon(this)">↓ SVG</button>
-          </div>
-        </div>
-      </div>
-      <div class="brand-asset-card">
-        <div class="brand-asset-preview" style="background:linear-gradient(135deg,#0a0c11,#13161f)">
-          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUWbBUp0DmhAE2A5rXMFFpRy-X1xxjh5XbwiTZoBPF-bQHQjBP4vTwA3611wyPvYuRcuszUbh5Tic93-3Ko_vlyALKAVdqcIOH7VphW31a3WUrVf5BWqhoJ9KYPC5_BsNiyzoXHMiIbPjvHiPO3lrPwu7uuEe6zdDsv6LxdB_jB6a4XY_je1fwcRngZYXQ/s16000/ChatGPT%20Image%20Jun%2028,%202026,%2009_5.png" alt="Yong Social Social Preview Image"/>
-        </div>
-        <div class="brand-asset-body">
-          <h5>Social Preview Image</h5>
-          <p>Open Graph / Twitter card — 1200×630</p>
-          <div class="brand-download-row">
-            <button class="brand-dl-btn" onclick="showComingSoon(this)">↓ PNG</button>
-            <button class="brand-dl-btn" onclick="showComingSoon(this)">↓ JPG</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Brand guidelines -->
-    <div class="brand-guidelines reveal reveal-delay-2">
-      <div class="guideline-item">
-        <h6>Brand colours</h6>
-        <p>Use these exact values in all Yong Social branded materials.</p>
-        <div class="color-swatches">
-          <div class="swatch" style="background:#F5A623" title="Amber #F5A623"></div>
-          <div class="swatch" style="background:#0D9488" title="Teal #0D9488"></div>
-          <div class="swatch" style="background:#0a0c11" title="Black #0a0c11"></div>
-          <div class="swatch" style="background:#ffffff;border-color:var(--border)" title="White #ffffff"></div>
-        </div>
-        <div style="font-size:11px;color:var(--muted);margin-top:8px;font-family:monospace">#F5A623 · #0D9488 · #0a0c11 · #ffffff</div>
-      </div>
-      <div class="guideline-item">
-        <h6>Typography</h6>
-        <p>Syne (display, headlines) · DM Sans (body, UI). Do not substitute typefaces in official communications.</p>
-      </div>
-      <div class="guideline-item">
-        <h6>Logo clearspace</h6>
-        <p>Maintain a minimum clearspace equal to the height of the "Y" mark around all logo variants. Do not crop, rotate, or recolour the logo.</p>
-      </div>
-      <div class="guideline-item">
-        <h6>Usage permissions</h6>
-        <p>Logos and brand assets may be used for editorial, press, and partner coverage. Commercial use requires written approval from Yong Social.</p>
-      </div>
-    </div>
-
-    <!-- Full brand pack download -->
-    <div class="brand-pack-box reveal reveal-delay-3">
-      <div class="brand-pack-text">
-        <h4>Full brand kit</h4>
-        <p>Download the complete Yong Social brand kit — logos in all formats, colour swatches, typography guide, and company information sheet.</p>
-      </div>
-      <button class="brand-pack-btn" onclick="showComingSoon(this)">
-        ↓ Download brand kit
-      </button>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
 
 <!-- MISSION -->
 <section id="mission">
@@ -736,7 +563,6 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
           <h5>Company</h5>
           <a href="#about">About</a>
           <a href="#mission">Mission</a>
-          <a href="#brand">Press &amp; Media</a>
           <a href="#contact">Contact</a>
         </div>
         <div class="footer-col">
@@ -832,14 +658,6 @@ document.getElementById('mobileMenuBtn')?.addEventListener('click',function(){
   });
 });
 
-// BRAND KIT PLACEHOLDER
-function showComingSoon(btn){
-  const orig=btn.textContent;
-  btn.textContent='Coming soon';
-  btn.style.color='var(--amber)';
-  btn.style.borderColor='rgba(245,166,35,.4)';
-  setTimeout(()=>{btn.textContent=orig;btn.style.color='';btn.style.borderColor='';},2000);
-}
 </script>
 </body>
 </html>
