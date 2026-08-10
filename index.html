@@ -579,7 +579,7 @@ footer{background:var(--bg3);border-top:1px solid var(--border);padding:48px 24p
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Yong Social. All rights reserved.</div>
+      <div class="footer-copy">© <span id="copyrightYear">2026</span> Yong Social. All rights reserved.</div>
       <div class="footer-legal">
         <a href="https://legal-disclaimer.yongsocial.com" target="_blank" rel="noopener">Legal Disclaimer</a>
       </div>
@@ -657,6 +657,12 @@ document.getElementById('mobileMenuBtn')?.addEventListener('click',function(){
     padding:'24px',borderBottom:'1px solid #1e2330',gap:'20px',zIndex:'99'
   });
 });
+
+// COPYRIGHT YEAR (auto-updates every year)
+const copyrightYearEl = document.getElementById('copyrightYear');
+if (copyrightYearEl) {
+  copyrightYearEl.textContent = new Date().getFullYear();
+}
 
 </script>
 </body>
