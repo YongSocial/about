@@ -362,7 +362,21 @@ html.js .rv.in{opacity:1;transform:none}
 .mission-q em{font-style:normal;background:linear-gradient(100deg,#c9a0ff,#6a8cff 55%,#2cc9a0);-webkit-background-clip:text;background-clip:text;color:transparent}
 .step p{max-width:360px}
 .join h2{max-width:8em}
-.hero h1{font-size:clamp(42px,5.8vw,92px)}
+.hero h1{font-size:clamp(42px,6.4vw,100px);max-width:10.5em}
+.hero .lead{max-width:640px}
+.join h2{max-width:none}
+.hero{min-height:0;align-items:flex-start}
+.hero .wrap{padding-top:140px;padding-bottom:104px}
+.sec{padding:clamp(60px,8vh,96px) 0}
+.join{min-height:0;align-items:flex-start;padding:clamp(60px,8vh,96px) 0}
+.mind-head{margin-bottom:clamp(28px,4vh,48px);gap:20px}
+.in-head{margin-bottom:clamp(28px,4vh,48px)}
+.row{padding:22px 0}
+.steps{margin-top:clamp(28px,4vh,48px)}
+.founder{margin-top:28px}
+.clist{margin-top:26px}
+.scrollcue{display:none!important}
+@media(max-width:899px){.join .wrap{padding-top:0;padding-bottom:0}.hero .wrap{padding-top:112px;padding-bottom:92px}}
 @media(max-width:600px){.ci{gap:4px}.ci .k{min-width:100%}}
 </style>
 </head>
@@ -401,7 +415,7 @@ html.js .rv.in{opacity:1;transform:none}
   </div>
 </div>
 
-<canvas id="gl" aria-hidden="true"></canvas>
+
 
 <main>
 <section class="hero dark" id="top" data-scene="hero">
@@ -533,231 +547,6 @@ html.js .rv.in{opacity:1;transform:none}
   setTimeout(function(){loaded=true;minWait=true;hide()},5000);
 })();
 </script>
-<script>
-/* ---------------- 3D scene: plain WebGL, no libraries ---------------- */
-(function(){
-  var canvas=document.getElementById('gl'),gl=null;
-  try{gl=canvas.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:true})||canvas.getContext('experimental-webgl');}catch(e){}
-  if(!gl){document.documentElement.classList.add('no-webgl');return;}
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ----- matrices (column-major) ----- */
-  function id(){return new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1])}
-  function mul(a,b){var o=new Float32Array(16);for(var c=0;c<4;c++)for(var r=0;r<4;r++){var s=0;for(var k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s}return o}
-  function T(x,y,z){var m=id();m[12]=x;m[13]=y;m[14]=z;return m}
-  function S(x,y,z){var m=id();m[0]=x;m[5]=y;m[10]=z;return m}
-  function RX(a){var c=Math.cos(a),s=Math.sin(a),m=id();m[5]=c;m[6]=s;m[9]=-s;m[10]=c;return m}
-  function RY(a){var c=Math.cos(a),s=Math.sin(a),m=id();m[0]=c;m[2]=-s;m[8]=s;m[10]=c;return m}
-  function RZ(a){var c=Math.cos(a),s=Math.sin(a),m=id();m[0]=c;m[1]=s;m[4]=-s;m[5]=c;return m}
-  function chain(){var m=arguments[0];for(var i=1;i<arguments.length;i++)m=mul(m,arguments[i]);return m}
-  function persp(f,a,n,fa){var t=1/Math.tan(f/2),m=new Float32Array(16);m[0]=t/a;m[5]=t;m[10]=(fa+n)/(n-fa);m[11]=-1;m[14]=2*fa*n/(n-fa);return m}
-
-  /* ----- shaders ----- */
-  function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s}
-  function prog(vs,fs,attrs){var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));attrs.forEach(function(n,i){gl.bindAttribLocation(p,i,n)});gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p}
-  function uni(p,names){var o={};names.forEach(function(n){o[n]=gl.getUniformLocation(p,n)});return o}
-
-  var P1,U1,P2,U2;
-  try{
-    P1=prog(
-     'attribute vec3 aPos;attribute vec3 aNrm;uniform mat4 uVP,uModel;varying vec3 vN,vW;'+
-     'void main(){vec4 w=uModel*vec4(aPos,1.);vW=w.xyz;vN=mat3(uModel)*aNrm;gl_Position=uVP*w;}',
-     'precision mediump float;varying vec3 vN,vW;uniform vec3 uCam,uCenter,uTint;uniform float uTime,uAlpha,uMode,uShift,uScale;'+
-     'vec3 grad(float t){vec3 a=vec3(1.,.76,1.),b=vec3(.74,.72,1.),c=vec3(.71,.88,.95),d=vec3(.70,.96,.82);t=clamp(t,0.,1.);'+
-       'if(t<.34)return mix(a,b,t/.34);if(t<.67)return mix(b,c,(t-.34)/.33);return mix(c,d,(t-.67)/.33);}'+
-     'void main(){vec3 n=normalize(vN);if(!gl_FrontFacing)n=-n;vec3 v=normalize(uCam-vW);float ndv=clamp(dot(n,v),0.,1.);'+
-       'vec3 col;float a=uAlpha;'+
-       'if(uMode>.5){col=uTint;float rim=pow(1.-ndv,2.);a*=.55+.45*rim;}'+
-       'else{float t=(vW.x-uCenter.x)/uScale*.2+.5+.1*sin((vW.y-uCenter.y)*1.4+uTime*.6)+uShift;'+
-         'vec3 base=grad(t);vec3 L=normalize(vec3(.45,.75,.55));float diff=.64+.36*dot(n,L);'+
-         'float rim=pow(1.-ndv,2.4);float spec=pow(max(dot(reflect(-L,n),v),0.),26.);'+
-         'col=base*diff+rim*vec3(.5,.46,.72)*.55+spec*.4;}'+
-       'gl_FragColor=vec4(col*a,a);}',
-     ['aPos','aNrm']);
-    U1=uni(P1,['uVP','uModel','uCam','uCenter','uTint','uTime','uAlpha','uMode','uShift','uScale']);
-    P2=prog(
-     'attribute vec4 aP;uniform mat4 uVP;uniform float uTime,uSize,uScroll;varying float vS;'+
-     'void main(){vec3 p=aP.xyz;p.y+=sin(uTime*.25+aP.w*6.283)*.25;p.x+=cos(uTime*.18+aP.w*12.)*.2;'+
-       'p.y=mod(p.y+uScroll*(.3+aP.w*.7)+6.,12.)-6.;vS=aP.w;gl_Position=uVP*vec4(p,1.);gl_PointSize=uSize*(.5+aP.w)*(7./gl_Position.w);}',
-     'precision mediump float;varying float vS;'+
-     'void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.0,d);vec3 c=mix(vec3(1.,.76,1.),vec3(.71,.96,.85),fract(vS*7.));gl_FragColor=vec4(c*a*.8,a*.8);}',
-     ['aP']);
-    U2=uni(P2,['uVP','uTime','uSize','uScroll']);
-  }catch(err){console.warn('SRC 3D disabled:',err);document.documentElement.classList.add('no-webgl');return;}
-
-  /* ----- geometry builders ----- */
-  function mk(pos,nrm,idx){
-    var pb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(pos),gl.STATIC_DRAW);
-    var nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(nrm),gl.STATIC_DRAW);
-    var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(idx),gl.STATIC_DRAW);
-    return {pb:pb,nb:nb,ib:ib,count:idx.length};
-  }
-  // tube along a planar (XY) path with per-point radius
-  function tube(path,radii,radial,closed){
-    var n=path.length,pos=[],nrm=[],idx=[];
-    for(var i=0;i<n;i++){
-      var a,b;
-      if(closed){a=path[(i-1+n-1)%(n-1)];b=path[(i+1)%(n-1)];}else{a=path[Math.max(i-1,0)];b=path[Math.min(i+1,n-1)];}
-      var tx=b[0]-a[0],ty=b[1]-a[1],l=Math.hypot(tx,ty)||1;tx/=l;ty/=l;var nx=-ty,ny=tx;
-      for(var j=0;j<=radial;j++){
-        var th=j/radial*Math.PI*2,c=Math.cos(th),s=Math.sin(th);
-        var dx=nx*c,dy=ny*c,dz=s;
-        pos.push(path[i][0]+dx*radii[i],path[i][1]+dy*radii[i],path[i][2]+dz*radii[i]);
-        nrm.push(dx,dy,dz);
-      }
-    }
-    var row=radial+1;
-    for(i=0;i<n-1;i++)for(j=0;j<radial;j++){var p=i*row+j,q=p+row;idx.push(p,q,p+1,q,q+1,p+1);}
-    var m=mk(pos,nrm,idx);m.segs=n-1;m.per=radial*6;return m;
-  }
-  function box(w,d){ // bottom at y=0, height 1
-    var x=w/2,z=d/2,pos=[],nrm=[],idx=[];
-    var F=[[[0,0,1],[-x,0,z],[x,0,z],[x,1,z],[-x,1,z]],[[0,0,-1],[x,0,-z],[-x,0,-z],[-x,1,-z],[x,1,-z]],
-           [[1,0,0],[x,0,z],[x,0,-z],[x,1,-z],[x,1,z]],[[-1,0,0],[-x,0,-z],[-x,0,z],[-x,1,z],[-x,1,-z]],
-           [[0,1,0],[-x,1,z],[x,1,z],[x,1,-z],[-x,1,-z]],[[0,-1,0],[-x,0,-z],[x,0,-z],[x,0,z],[-x,0,z]]];
-    F.forEach(function(f,k){for(var i=1;i<5;i++){pos.push(f[i][0],f[i][1],f[i][2]);nrm.push(f[0][0],f[0][1],f[0][2]);}idx.push(k*4,k*4+1,k*4+2,k*4,k*4+2,k*4+3);});
-    return mk(pos,nrm,idx);
-  }
-  function cone(r,h,seg){
-    var pos=[],nrm=[],idx=[],i;
-    for(i=0;i<=seg;i++){var a=i/seg*Math.PI*2,c=Math.cos(a),s=Math.sin(a),l=Math.hypot(h,r);
-      pos.push(r*c,0,r*s,0,h,0);nrm.push(c*h/l,r/l,s*h/l,c*h/l,r/l,s*h/l);}
-    for(i=0;i<seg;i++)idx.push(i*2,i*2+1,i*2+2,i*2+1,i*2+3,i*2+2);
-    var b=pos.length/3;pos.push(0,0,0);nrm.push(0,-1,0);
-    for(i=0;i<=seg;i++){var a2=i/seg*Math.PI*2;pos.push(r*Math.cos(a2),0,r*Math.sin(a2));nrm.push(0,-1,0);}
-    for(i=0;i<seg;i++)idx.push(b,b+1+i+1,b+1+i);
-    return mk(pos,nrm,idx);
-  }
-  function sphere(la,lo){
-    var pos=[],nrm=[],idx=[];
-    for(var i=0;i<=la;i++){var t=i/la*Math.PI;for(var j=0;j<=lo;j++){var p=j/lo*Math.PI*2;var x=Math.sin(t)*Math.cos(p),y=Math.cos(t),z=Math.sin(t)*Math.sin(p);pos.push(x,y,z);nrm.push(x,y,z);}}
-    for(i=0;i<la;i++)for(j=0;j<lo;j++){var a=i*(lo+1)+j,b=a+lo+1;idx.push(a,b,a+1,b,b+1,a+1);}
-    return mk(pos,nrm,idx);
-  }
-  function disc(seg){
-    var pos=[0,0,0],nrm=[0,0,1],idx=[];
-    for(var i=0;i<=seg;i++){var a=i/seg*Math.PI*2;pos.push(Math.cos(a),Math.sin(a),0);nrm.push(0,0,1);if(i<seg)idx.push(0,i+1,i+2);}
-    return mk(pos,nrm,idx);
-  }
-  function arcPath(a,b,A,B,z,n){var p=[];for(var i=0;i<=n;i++){var t=a+(b-a)*i/n;p.push([A*Math.cos(t),B*Math.sin(t),z]);}return p}
-  function prof(n,fn){var r=[];for(var i=0;i<n;i++)r.push(fn(i/(n-1)));return r}
-
-  /* ----- build the globe emblem ----- */
-  var PI=Math.PI,i;
-  var globe=sphere(36,52);
-  function circ(r,w,n){return tube(arcPath(0,PI*2,r,r,0,n),prof(n+1,function(){return w}),12,true)}
-  var wire=circ(1.2,.02,120),orbA=circ(1.85,.05,160),orbB=circ(2.25,.034,180);
-  var mA=chain(RZ(.42),RX(1.15)),mB=chain(RZ(-.55),RX(.95));
-  var orb=sphere(10,14);
-  /* ----- particles ----- */
-  var NP=650,pd=new Float32Array(NP*4);
-  for(i=0;i<NP;i++){pd[i*4]=(Math.random()-.5)*20;pd[i*4+1]=(Math.random()-.5)*12;pd[i*4+2]=-7+Math.random()*10;pd[i*4+3]=Math.random();}
-  var pbuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,pbuf);gl.bufferData(gl.ARRAY_BUFFER,pd,gl.STATIC_DRAW);
-
-  /* ----- state ----- */
-  var FOV=40*PI/180,CAM=7,dpr=1,W=1,H=1,aspect=1;
-  var ptr={x:0,y:0,tx:0,ty:0};
-  var st={x:0,y:0,s:1,op:0,ry:0},tgt={x:0,y:0,s:1,op:0,ry:0};
-  var sections=Array.prototype.slice.call(document.querySelectorAll('[data-scene]'));
-  var firstFrame=true;
-
-  function resize(){
-    dpr=Math.min(window.devicePixelRatio||1,2);
-    W=canvas.clientWidth||innerWidth;H=canvas.clientHeight||innerHeight;
-    canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);aspect=W/H;gl.viewport(0,0,canvas.width,canvas.height);
-  }
-  function sceneFor(name){
-    var halfH=Math.tan(FOV/2)*CAM,halfW=halfH*aspect,wide=aspect>1.05;
-    var sc=wide?Math.min(1,halfW*.42/2.3,halfH*2*.7/2.4):Math.min(1,halfW*2*.88/4.6);
-    var x=wide?halfW*.55:0,y=wide?.05:halfH*.47;
-    if(name==='ghost')return {x:0,y:0,s:Math.max(sc*1.7,1.4),op:.09,ry:.7};
-    if(name==='off')return {x:x,y:y,s:sc,op:0,ry:0};
-    var sy=window.scrollY||0;
-    if(name==='join')return {x:x,y:y,s:sc,op:wide?1:.18,ry:-.35};
-    return {x:x,y:y,s:sc,op:wide?1:Math.max(.14,.9*(1-sy/(innerHeight*.5))),ry:0};
-  }
-  function ease(t){t=Math.max(0,Math.min(1,t));return 1-Math.pow(1-t,3)}
-  function seg(t,a,d){return ease((t-a)/d)}
-
-  var cur=null;
-  function bind(m){
-    gl.bindBuffer(gl.ARRAY_BUFFER,m.pb);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
-    gl.bindBuffer(gl.ARRAY_BUFFER,m.nb);gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.ib);
-  }
-  var G,VP,time=0;
-  function draw(m,local,o){
-    o=o||{};var frac=o.frac===undefined?1:o.frac;if(frac<=0)return;
-    bind(m);
-    gl.uniformMatrix4fv(U1.uModel,false,mul(G,local));
-    gl.uniform1f(U1.uAlpha,o.alpha===undefined?1:o.alpha);
-    gl.uniform1f(U1.uMode,o.tint?1:0);
-    if(o.tint)gl.uniform3fv(U1.uTint,o.tint);
-    gl.uniform1f(U1.uShift,o.shift||0);
-    var count=m.count;
-    if(frac<1&&m.segs){count=Math.max(1,Math.floor(m.segs*frac))*m.per;}
-    gl.drawElements(gl.TRIANGLES,count,gl.UNSIGNED_SHORT,0);
-  }
-
-  function frame(now){
-    requestAnimationFrame(frame);
-    var dt=Math.min(.05,(now-(frame.last||now))/1000);frame.last=now;time+=dt;
-    // scene target from viewport centre
-    var vh=innerHeight,name='hero';
-    for(var k=0;k<sections.length;k++){var r=sections[k].getBoundingClientRect();if(r.top<=vh*.5&&r.bottom>vh*.5){name=sections[k].getAttribute('data-scene');break;}}
-    Object.assign(tgt,sceneFor(name));
-    var fr=document.querySelector('footer').getBoundingClientRect(),fk=Math.max(0,Math.min(1,(vh-fr.top)/(vh*.35)));tgt.op=tgt.op*(1-fk)+Math.min(tgt.op,.1)*fk;
-    var kk=firstFrame?1:1-Math.exp(-dt*3.6);firstFrame=false;
-    for(var key in tgt)st[key]+=(tgt[key]-st[key])*kk;
-    ptr.x+=(ptr.tx-ptr.x)*(1-Math.exp(-dt*4));ptr.y+=(ptr.ty-ptr.y)*(1-Math.exp(-dt*4));
-    var intro=window.__introStart?(performance.now()-window.__introStart)/1000:0;
-    var opac=st.op*Math.min(1,intro*1.5+(window.__introStart?0:0));
-    canvas.style.opacity=opac.toFixed(3);
-    if(opac<.01)return;
-
-    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-    gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);
-    gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(true);
-
-    var Pm=persp(FOV,aspect,.1,60);VP=mul(Pm,T(0,0,-CAM));
-    var sy=window.scrollY||0,m=reduce?0:1;
-    var float=Math.sin(time*.9)*.07*m;
-    var rotY=st.ry+ptr.x*.42+Math.sin(time*.4)*.14*m+Math.sin(sy*.0011)*.5*m;
-    var rotX=-ptr.y*.24+Math.sin(time*.33)*.05*m;
-    G=chain(T(st.x,st.y+float,0),RY(rotY),RX(rotX),S(st.s,st.s,st.s));
-
-    gl.useProgram(P1);
-    gl.uniformMatrix4fv(U1.uVP,false,VP);gl.uniform3f(U1.uCam,0,0,CAM);gl.uniform3f(U1.uCenter,st.x,st.y,0);
-    gl.uniform1f(U1.uTime,time);gl.uniform1f(U1.uScale,st.s);
-
-    var t=intro||0,gp=seg(t,0,.9),gs=.9+.1*gp,WT=[.8,.78,1];
-    if(gp>0){
-      for(i=0;i<3;i++)draw(wire,chain(RY(i*PI/3+time*.18*m),S(gs,gs,gs)),{tint:WT,alpha:.55*gp});
-      draw(wire,chain(RX(PI/2),S(gs,gs,gs)),{tint:WT,alpha:.55*gp});
-      draw(wire,chain(T(0,.62,0),RX(PI/2),S(.85*gs,.85*gs,.85*gs)),{tint:WT,alpha:.45*gp});
-      draw(wire,chain(T(0,-.62,0),RX(PI/2),S(.85*gs,.85*gs,.85*gs)),{tint:WT,alpha:.45*gp});
-    }
-    draw(orbA,mA,{frac:seg(t,.4,1.2),shift:-.05});
-    draw(orbB,mB,{frac:seg(t,.6,1.2),shift:.08});
-    var og=seg(t,1.6,.6);
-    if(og>0)for(i=0;i<4;i++){var ph=time*(.32+i*.07)+i*1.7,rr=i<2?1.85:2.25,M2=i<2?mA:mB,s2=.07*og;draw(orb,chain(M2,T(rr*Math.cos(ph),rr*Math.sin(ph),0),S(s2,s2,s2)),{tint:[.95,.9,1],alpha:1});}
-    gl.depthMask(false);
-    if(gp>0)draw(globe,S(1.1*gs,1.1*gs,1.1*gs),{alpha:.5*gp,shift:.02});
-    // particles
-    gl.useProgram(P2);gl.blendFunc(gl.ONE,gl.ONE);
-    gl.disableVertexAttribArray(1);
-    gl.uniformMatrix4fv(U2.uVP,false,VP);gl.uniform1f(U2.uTime,time);gl.uniform1f(U2.uSize,3.2*dpr);gl.uniform1f(U2.uScroll,sy*.0016*m);
-    gl.bindBuffer(gl.ARRAY_BUFFER,pbuf);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,4,gl.FLOAT,false,0,0);
-    gl.drawArrays(gl.POINTS,0,NP);
-    gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
-  }
-
-  addEventListener('resize',resize);
-  addEventListener('pointermove',function(e){ptr.tx=(e.clientX/innerWidth)*2-1;ptr.ty=(e.clientY/innerHeight)*2-1;},{passive:true});
-  canvas.addEventListener('webglcontextlost',function(e){e.preventDefault();document.documentElement.classList.add('no-webgl');},false);
-  resize();requestAnimationFrame(frame);
-  window.__srcGL=true;
-})();
-</script>
 </body>
 </html>
